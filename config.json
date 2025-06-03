@@ -1,0 +1,25 @@
+{
+    "window": {
+        "width": 1200,
+        "height": 800,
+        "x": 269,
+        "y": 36
+    },
+    "database": {
+        "path": "accounts.db"
+    },
+    "security": {
+        "auto_lock_minutes": 30,
+        "require_password": false
+    },
+    "ui": {
+        "theme": "light",
+        "language": "zh_CN",
+        "show_sensitive_data": false
+    },
+    "backup": {
+        "auto_backup": true,
+        "backup_interval_days": 7,
+        "backup_path": "backups"
+    }
+}
