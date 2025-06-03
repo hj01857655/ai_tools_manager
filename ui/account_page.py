@@ -13,6 +13,7 @@ from models.database import DatabaseManager
 from ui.account_dialog import AccountDialog
 from ui.automation_dialog import AutomationDialog
 from automation.automation_manager import is_automation_supported
+from utils.logger import get_logger
 
 
 class AccountTableWidget(QTableWidget):
