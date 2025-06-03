@@ -2,18 +2,17 @@
 账号管理页面组件
 """
 from PySide6.QtWidgets import (
-    QWidget, QVBoxLayout, QHBoxLayout, QLabel, QPushButton, 
+    QWidget, QVBoxLayout, QHBoxLayout, QLabel, QPushButton,
     QTableWidget, QTableWidgetItem, QHeaderView, QLineEdit,
-    QComboBox, QGroupBox, QFormLayout, QMessageBox, QFrame
+    QComboBox, QGroupBox, QMessageBox, QDialog
 )
-from PySide6.QtCore import Qt, Signal
+from PySide6.QtCore import Signal
 from PySide6.QtGui import QFont, QColor
 from models.account import Account, AccountType, AccountStatus
 from models.database import DatabaseManager
 from ui.account_dialog import AccountDialog
 from ui.automation_dialog import AutomationDialog
 from automation.automation_manager import is_automation_supported
-from datetime import datetime
 
 
 class AccountTableWidget(QTableWidget):
@@ -184,10 +183,16 @@ class AccountPage(QWidget):
             self.auto_register_button = QPushButton("🤖 自动注册")
             self.auto_register_button.setObjectName("automationButton")
             button_layout.addWidget(self.auto_register_button)
-            
+
             self.auto_login_button = QPushButton("🔐 自动登录")
             self.auto_login_button.setObjectName("automationButton")
             button_layout.addWidget(self.auto_login_button)
+
+        # Cursor特殊功能：切换账号
+        if self.account_type_id == "cursor":
+            self.switch_account_button = QPushButton("🔄 切换账号")
+            self.switch_account_button.setObjectName("switchButton")
+            button_layout.addWidget(self.switch_account_button)
         
         button_layout.addStretch()
         
@@ -246,6 +251,10 @@ class AccountPage(QWidget):
             self.auto_register_button.clicked.connect(self.show_auto_register)
         if hasattr(self, 'auto_login_button'):
             self.auto_login_button.clicked.connect(self.show_auto_login)
+
+        # 切换账号按钮连接（如果存在）
+        if hasattr(self, 'switch_account_button'):
+            self.switch_account_button.clicked.connect(self.show_switch_account_dialog)
         
         # 表格连接
         self.account_table.itemSelectionChanged.connect(self.on_selection_changed)
@@ -311,7 +320,7 @@ class AccountPage(QWidget):
                 dialog.type_combo.setCurrentIndex(i)
                 break
         
-        if dialog.exec() == dialog.Accepted:
+        if dialog.exec() == QDialog.Accepted:
             account = dialog.get_account()
             try:
                 account_id = self.db_manager.add_account(account)
@@ -332,7 +341,7 @@ class AccountPage(QWidget):
     def edit_account_by_object(self, account: Account):
         """根据账号对象编辑"""
         dialog = AccountDialog(account=account, parent=self)
-        if dialog.exec() == dialog.Accepted:
+        if dialog.exec() == QDialog.Accepted:
             updated_account = dialog.get_account()
             try:
                 self.db_manager.update_account(updated_account)
@@ -431,7 +440,7 @@ class AccountPage(QWidget):
             
             dialog.setWindowTitle("添加自动化创建的账号")
             
-            if dialog.exec() == dialog.Accepted:
+            if dialog.exec() == QDialog.Accepted:
                 account = dialog.get_account()
                 account_id = self.db_manager.add_account(account)
                 account.id = account_id
@@ -440,6 +449,45 @@ class AccountPage(QWidget):
                 
         except Exception as e:
             QMessageBox.critical(self, "错误", f"添加账号失败: {str(e)}")
+
+    def show_switch_account_dialog(self):
+        """显示切换账号对话框"""
+        try:
+            from ui.switch_account_dialog import SwitchAccountDialog
+
+            # 获取当前Cursor账号列表
+            all_accounts = self.db_manager.get_all_accounts()
+            cursor_accounts = [acc for acc in all_accounts if acc.account_type == self.account_type]
+
+            if not cursor_accounts:
+                QMessageBox.information(
+                    self, "提示",
+                    "暂无Cursor账号可切换。\n请先添加一些Cursor账号。"
+                )
+                return
+
+            dialog = SwitchAccountDialog(cursor_accounts, self)
+            dialog.account_switched.connect(self.on_account_switched)
+            dialog.exec()
+
+        except Exception as e:
+            QMessageBox.critical(self, "错误", f"打开切换账号对话框失败: {str(e)}")
+
+    def on_account_switched(self, account):
+        """账号切换完成处理"""
+        try:
+            # 刷新账号列表
+            self.refresh_accounts()
+
+            # 显示成功消息
+            QMessageBox.information(
+                self, "切换成功",
+                f"已成功切换到账号: {account.name}\n\n"
+                f"Cursor应该已经打开并登录到此账号。"
+            )
+
+        except Exception as e:
+            QMessageBox.warning(self, "警告", f"切换后处理失败: {str(e)}")
     
     def apply_styles(self):
         """应用样式"""
@@ -470,6 +518,20 @@ class AccountPage(QWidget):
             
             QPushButton#automationButton:hover {
                 background-color: #45a049;
+            }
+
+            QPushButton#switchButton {
+                background-color: #ff9800;
+                color: white;
+                border: none;
+                border-radius: 6px;
+                padding: 10px 20px;
+                font-weight: bold;
+                font-size: 13px;
+            }
+
+            QPushButton#switchButton:hover {
+                background-color: #f57c00;
             }
             
             QPushButton#dangerButton {

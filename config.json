@@ -2,8 +2,8 @@
     "window": {
         "width": 1200,
         "height": 800,
-        "x": 269,
-        "y": 36
+        "x": 216,
+        "y": 37
     },
     "database": {
         "path": "accounts.db"

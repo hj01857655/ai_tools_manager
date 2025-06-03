@@ -3,15 +3,14 @@
 """
 from PySide6.QtWidgets import (
     QWidget, QVBoxLayout, QHBoxLayout, QLabel, QPushButton, 
-    QFrame, QGridLayout, QGroupBox, QScrollArea, QSizePolicy
+    QFrame, QGridLayout, QGroupBox, QScrollArea
 )
 from PySide6.QtCore import Qt, Signal
-from PySide6.QtGui import QFont, QPixmap, QPainter, QColor
+from PySide6.QtGui import QFont
 
 from models.database import DatabaseManager
 from models.account import AccountType, AccountStatus
 from ui.automation_dialog import AutomationDialog
-from automation.automation_manager import is_automation_supported
 
 
 class StatCard(QFrame):
@@ -308,40 +307,69 @@ class HomePage(QWidget):
         try:
             # 获取所有账号
             accounts = self.db_manager.get_all_accounts()
-            
+
             # 统计总数
             total_count = len(accounts)
-            self.stat_cards['total'].findChild(QLabel, "cardCount").setText(str(total_count))
-            
+            self.update_stat_card('total', total_count)
+
             # 按工具类型统计
             cursor_count = len([acc for acc in accounts if acc.account_type == AccountType.CURSOR])
             windsurf_count = len([acc for acc in accounts if acc.account_type == AccountType.WINDSURF])
             augment_count = len([acc for acc in accounts if acc.account_type == AccountType.AUGMENT])
-            
-            self.stat_cards['cursor'].findChild(QLabel, "cardCount").setText(str(cursor_count))
-            self.stat_cards['windsurf'].findChild(QLabel, "cardCount").setText(str(windsurf_count))
-            self.stat_cards['augment'].findChild(QLabel, "cardCount").setText(str(augment_count))
-            
+
+            self.update_stat_card('cursor', cursor_count)
+            self.update_stat_card('windsurf', windsurf_count)
+            self.update_stat_card('augment', augment_count)
+
             # 按状态统计
             active_count = len([acc for acc in accounts if acc.status == AccountStatus.ACTIVE])
             expired_count = len([acc for acc in accounts if acc.status == AccountStatus.EXPIRED])
-            
-            self.stat_cards['active'].findChild(QLabel, "cardCount").setText(str(active_count))
-            self.stat_cards['expired'].findChild(QLabel, "cardCount").setText(str(expired_count))
-            
+
+            self.update_stat_card('active', active_count)
+            self.update_stat_card('expired', expired_count)
+
             # 本月新增（简化统计）
-            monthly_count = len([acc for acc in accounts if acc.created_at and 
-                               acc.created_at.month == __import__('datetime').datetime.now().month])
-            self.stat_cards['monthly'].findChild(QLabel, "cardCount").setText(str(monthly_count))
-            
+            import datetime
+            current_month = datetime.datetime.now().month
+            monthly_count = len([acc for acc in accounts if acc.created_at and
+                               acc.created_at.month == current_month])
+            self.update_stat_card('monthly', monthly_count)
+
             # 更新活动信息
             if accounts:
-                latest_account = max(accounts, key=lambda x: x.created_at or __import__('datetime').datetime.min)
+                latest_account = max(accounts, key=lambda x: x.created_at or datetime.datetime.min)
                 activity_text = f"最新添加: {latest_account.name} ({latest_account.account_type.value})"
                 self.activity_label.setText(activity_text)
-            
+            else:
+                self.activity_label.setText("暂无账号数据")
+
         except Exception as e:
             print(f"刷新数据失败: {e}")
+            # 设置默认值
+            self.set_default_stats()
+
+    def update_stat_card(self, card_name: str, count: int):
+        """更新统计卡片"""
+        try:
+            card = self.stat_cards.get(card_name)
+            if card:
+                count_label = card.findChild(QLabel, "cardCount")
+                if count_label:
+                    count_label.setText(str(count))
+        except Exception as e:
+            print(f"更新统计卡片失败 {card_name}: {e}")
+
+    def set_default_stats(self):
+        """设置默认统计值"""
+        default_stats = {
+            'total': 0, 'cursor': 0, 'windsurf': 0, 'augment': 0,
+            'active': 0, 'expired': 0, 'monthly': 0, 'automation': 3
+        }
+
+        for card_name, count in default_stats.items():
+            self.update_stat_card(card_name, count)
+
+        self.activity_label.setText("欢迎使用AI工具管理器！点击左侧工具开始管理账号。")
     
     def show_batch_automation(self):
         """显示批量自动化对话框"""

@@ -118,7 +118,9 @@ class DatabaseManager:
             cursor = conn.cursor()
             cursor.execute('SELECT * FROM accounts ORDER BY created_at DESC')
             rows = cursor.fetchall()
-            return [self._row_to_account(row) for row in rows]
+            accounts = [self._row_to_account(row) for row in rows]
+            # 过滤掉None值（转换失败的记录）
+            return [acc for acc in accounts if acc is not None]
 
     def get_accounts_by_user(self, user_id: int) -> List[Account]:
         """根据用户ID获取账号"""
@@ -198,33 +200,65 @@ class DatabaseManager:
     
     def _row_to_account(self, row) -> Account:
         """将数据库行转换为Account对象"""
-        account = Account()
-        account.id = row[0]
-        # row[1] 是 user_id，暂时跳过
-        account.name = row[2]
-        account.account_type = AccountType(row[3])
-        account.email = row[4] or ""
-        account.username = row[5] or ""
-        account.password = row[6] or ""
-        account.api_key = row[7] or ""
-        account.status = AccountStatus(row[8])
-        account.subscription_type = row[9] or ""
+        try:
+            account = Account()
+            account.id = row[0]
+            # row[1] 是 user_id，暂时跳过
+            account.name = row[2]
 
-        # 处理日期字段
-        if row[10]:  # expiry_date
-            account.expiry_date = datetime.fromisoformat(row[10])
+            # 安全地转换账号类型
+            try:
+                account.account_type = AccountType(row[3])
+            except ValueError:
+                print(f"警告: 无效的账号类型 '{row[3]}', 使用默认值 OTHER")
+                account.account_type = AccountType.OTHER
 
-        account.notes = row[11] or ""
-        account.tags = row[12] or ""
-        account.created_at = datetime.fromisoformat(row[13])
-        account.updated_at = datetime.fromisoformat(row[14])
+            account.email = row[4] or ""
+            account.username = row[5] or ""
+            account.password = row[6] or ""
+            account.api_key = row[7] or ""
 
-        if row[15]:  # last_used
-            account.last_used = datetime.fromisoformat(row[15])
+            # 安全地转换状态
+            try:
+                account.status = AccountStatus(row[8])
+            except ValueError:
+                print(f"警告: 无效的账号状态 '{row[8]}', 使用默认值 ACTIVE")
+                account.status = AccountStatus.ACTIVE
 
-        account.usage_count = row[16] or 0
+            account.subscription_type = row[9] or ""
 
-        return account
+            # 处理日期字段
+            if row[10]:  # expiry_date
+                try:
+                    account.expiry_date = datetime.fromisoformat(row[10])
+                except ValueError:
+                    account.expiry_date = None
+
+            account.notes = row[11] or ""
+            account.tags = row[12] or ""
+
+            try:
+                account.created_at = datetime.fromisoformat(row[13])
+            except ValueError:
+                account.created_at = datetime.now()
+
+            try:
+                account.updated_at = datetime.fromisoformat(row[14])
+            except ValueError:
+                account.updated_at = datetime.now()
+
+            if row[15]:  # last_used
+                try:
+                    account.last_used = datetime.fromisoformat(row[15])
+                except ValueError:
+                    account.last_used = None
+
+            account.usage_count = row[16] or 0
+
+            return account
+        except Exception as e:
+            print(f"转换账号数据失败: {e}, 跳过此记录")
+            return None
 
     # 用户管理方法
     def add_user(self, user: User) -> int:

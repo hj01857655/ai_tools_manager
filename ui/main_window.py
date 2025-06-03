@@ -85,6 +85,13 @@ class MainWindow(QMainWindow):
 
     def create_pages(self):
         """创建所有页面"""
+        # 创建首页
+        home_page = HomePage()
+        home_page.tool_selected.connect(self.switch_page)
+        self.pages["home"] = home_page
+        self.page_stack.addWidget(home_page)
+
+        # 创建工具页面
         page_configs = [
             ("cursor", "Cursor"),
             ("windsurf", "Windsurf"),
@@ -158,17 +165,26 @@ class MainWindow(QMainWindow):
             self.page_stack.setCurrentWidget(page)
 
             # 更新状态栏
-            page_name = page.account_type.value
-            self.status_label.setText(f"当前页面: {page_name}")
+            if page_id == "home":
+                self.status_label.setText("当前页面: 首页")
+                # 刷新首页数据
+                page.refresh_data()
+            else:
+                page_name = page.account_type.value
+                self.status_label.setText(f"当前页面: {page_name}")
+                # 刷新页面数据
+                page.refresh_accounts()
 
-            # 刷新页面数据
-            page.refresh_accounts()
+            # 更新侧边导航选择状态
+            self.sidebar.select_page(page_id)
 
     def refresh_current_page(self):
         """刷新当前页面"""
         current_widget = self.page_stack.currentWidget()
         if isinstance(current_widget, AccountPage):
             current_widget.refresh_accounts()
+        elif isinstance(current_widget, HomePage):
+            current_widget.refresh_data()
 
     def apply_theme(self):
         """应用主题"""
