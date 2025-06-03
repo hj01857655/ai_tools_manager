@@ -374,15 +374,23 @@ class AccountPage(QWidget):
     def show_auto_register(self):
         """显示自动注册对话框"""
         try:
-            dialog = AutomationDialog(self)
-            # 预设账号类型并切换到注册选项卡
-            for i in range(dialog.reg_type_combo.count()):
-                if dialog.reg_type_combo.itemData(i) == self.account_type:
-                    dialog.reg_type_combo.setCurrentIndex(i)
-                    break
-            dialog.tab_widget.setCurrentIndex(0)  # 注册选项卡
-            dialog.automation_completed.connect(self.on_automation_completed)
-            dialog.exec()
+            # Cursor使用专门的注册配置对话框
+            if self.account_type_id == "cursor":
+                from ui.cursor_register_dialog import CursorRegisterDialog
+                dialog = CursorRegisterDialog(self)
+                dialog.accounts_generated.connect(self.on_cursor_accounts_generated)
+                dialog.exec()
+            else:
+                # 其他工具使用通用自动化对话框
+                dialog = AutomationDialog(self)
+                # 预设账号类型并切换到注册选项卡
+                for i in range(dialog.reg_type_combo.count()):
+                    if dialog.reg_type_combo.itemData(i) == self.account_type:
+                        dialog.reg_type_combo.setCurrentIndex(i)
+                        break
+                dialog.tab_widget.setCurrentIndex(0)  # 注册选项卡
+                dialog.automation_completed.connect(self.on_automation_completed)
+                dialog.exec()
         except Exception as e:
             QMessageBox.critical(self, "错误", f"打开自动注册对话框失败: {str(e)}")
     
@@ -449,6 +457,49 @@ class AccountPage(QWidget):
                 
         except Exception as e:
             QMessageBox.critical(self, "错误", f"添加账号失败: {str(e)}")
+
+    def on_cursor_accounts_generated(self, accounts):
+        """处理Cursor生成的账号"""
+        try:
+            from models.account import Account, AccountStatus
+
+            added_count = 0
+
+            for generated_account in accounts:
+                try:
+                    # 创建账号对象
+                    account = Account(
+                        name=f"Cursor-{generated_account.username}",
+                        email=generated_account.email,
+                        password=generated_account.password,
+                        account_type=self.account_type,
+                        status=AccountStatus.ACTIVE,
+                        tags=f"auto-generated,domain:{generated_account.domain}"
+                    )
+
+                    # 添加到数据库
+                    if self.db_manager.add_account(account):
+                        added_count += 1
+
+                except Exception as e:
+                    self.logger.error(f"添加生成的账号失败: {e}")
+                    continue
+
+            # 刷新账号列表
+            self.refresh_accounts()
+
+            # 显示结果
+            if added_count > 0:
+                QMessageBox.information(
+                    self,
+                    "成功",
+                    f"成功添加 {added_count} 个Cursor账号到管理器"
+                )
+            else:
+                QMessageBox.warning(self, "警告", "没有账号被添加到管理器")
+
+        except Exception as e:
+            QMessageBox.critical(self, "错误", f"处理生成账号失败: {str(e)}")
 
     def show_switch_account_dialog(self):
         """显示切换账号对话框"""

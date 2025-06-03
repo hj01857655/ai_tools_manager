@@ -1,0 +1,806 @@
+[
+  {
+    "timestamp": "2025-06-03T11:05:53.012486",
+    "level": "INFO",
+    "message": "设置已加载",
+    "logger": "ai_tools_manager"
+  },
+  {
+    "timestamp": "2025-06-03T11:09:20.600194",
+    "level": "INFO",
+    "message": "设置已加载",
+    "logger": "ai_tools_manager"
+  },
+  {
+    "timestamp": "2025-06-03T11:11:31.317826",
+    "level": "INFO",
+    "message": "设置已加载",
+    "logger": "ai_tools_manager"
+  },
+  {
+    "timestamp": "2025-06-03T11:19:14.182606",
+    "level": "INFO",
+    "message": "设置已加载",
+    "logger": "ai_tools_manager"
+  },
+  {
+    "timestamp": "2025-06-03T11:24:59.913022",
+    "level": "INFO",
+    "message": "设置已加载",
+    "logger": "ai_tools_manager"
+  },
+  {
+    "timestamp": "2025-06-03T11:34:19.490923",
+    "level": "INFO",
+    "message": "设置已加载",
+    "logger": "ai_tools_manager"
+  },
+  {
+    "timestamp": "2025-06-03T11:41:44.041257",
+    "level": "INFO",
+    "message": "开始生成账号信息",
+    "logger": "ai_tools_manager"
+  },
+  {
+    "timestamp": "2025-06-03T11:41:44.042293",
+    "level": "DEBUG",
+    "message": "生成用户名: cursor994",
+    "logger": "ai_tools_manager"
+  },
+  {
+    "timestamp": "2025-06-03T11:41:44.042293",
+    "level": "DEBUG",
+    "message": "生成邮箱: cursor9942104@mohmal.com",
+    "logger": "ai_tools_manager"
+  },
+  {
+    "timestamp": "2025-06-03T11:41:44.044587",
+    "level": "DEBUG",
+    "message": "生成密码: ************ (长度: 12)",
+    "logger": "ai_tools_manager"
+  },
+  {
+    "timestamp": "2025-06-03T11:41:44.045586",
+    "level": "DEBUG",
+    "message": "生成PIN: 4927",
+    "logger": "ai_tools_manager"
+  },
+  {
+    "timestamp": "2025-06-03T11:41:44.047585",
+    "level": "INFO",
+    "message": "账号生成成功: cursor9942104@mohmal.com",
+    "logger": "ai_tools_manager"
+  },
+  {
+    "timestamp": "2025-06-03T11:41:44.049585",
+    "level": "INFO",
+    "message": "开始生成账号信息",
+    "logger": "ai_tools_manager"
+  },
+  {
+    "timestamp": "2025-06-03T11:41:44.050633",
+    "level": "DEBUG",
+    "message": "生成用户名: cursor928",
+    "logger": "ai_tools_manager"
+  },
+  {
+    "timestamp": "2025-06-03T11:41:44.051643",
+    "level": "DEBUG",
+    "message": "生成邮箱: cursor9282104@throwaway.email",
+    "logger": "ai_tools_manager"
+  },
+  {
+    "timestamp": "2025-06-03T11:41:44.053161",
+    "level": "DEBUG",
+    "message": "生成密码: ************ (长度: 12)",
+    "logger": "ai_tools_manager"
+  },
+  {
+    "timestamp": "2025-06-03T11:41:44.054690",
+    "level": "DEBUG",
+    "message": "生成PIN: 8618",
+    "logger": "ai_tools_manager"
+  },
+  {
+    "timestamp": "2025-06-03T11:41:44.064263",
+    "level": "INFO",
+    "message": "账号生成成功: cursor9282104@throwaway.email",
+    "logger": "ai_tools_manager"
+  },
+  {
+    "timestamp": "2025-06-03T11:41:44.098459",
+    "level": "INFO",
+    "message": "开始生成账号信息",
+    "logger": "ai_tools_manager"
+  },
+  {
+    "timestamp": "2025-06-03T11:41:44.099457",
+    "level": "DEBUG",
+    "message": "生成用户名: cursor566",
+    "logger": "ai_tools_manager"
+  },
+  {
+    "timestamp": "2025-06-03T11:41:44.099964",
+    "level": "DEBUG",
+    "message": "生成邮箱: cursor5662104@10minutemail.com",
+    "logger": "ai_tools_manager"
+  },
+  {
+    "timestamp": "2025-06-03T11:41:44.099964",
+    "level": "DEBUG",
+    "message": "生成密码: ************ (长度: 12)",
+    "logger": "ai_tools_manager"
+  },
+  {
+    "timestamp": "2025-06-03T11:41:44.101470",
+    "level": "DEBUG",
+    "message": "生成PIN: 9884",
+    "logger": "ai_tools_manager"
+  },
+  {
+    "timestamp": "2025-06-03T11:41:44.111745",
+    "level": "INFO",
+    "message": "账号生成成功: cursor5662104@10minutemail.com",
+    "logger": "ai_tools_manager"
+  },
+  {
+    "timestamp": "2025-06-03T11:41:44.168216",
+    "level": "INFO",
+    "message": "开始批量生成 5 个账号",
+    "logger": "ai_tools_manager"
+  },
+  {
+    "timestamp": "2025-06-03T11:41:44.173321",
+    "level": "INFO",
+    "message": "开始生成账号信息",
+    "logger": "ai_tools_manager"
+  },
+  {
+    "timestamp": "2025-06-03T11:41:44.175324",
+    "level": "DEBUG",
+    "message": "生成用户名: cursor_test001340",
+    "logger": "ai_tools_manager"
+  },
+  {
+    "timestamp": "2025-06-03T11:41:44.176325",
+    "level": "DEBUG",
+    "message": "生成邮箱: cursor_test0013402104@10minutemail.com",
+    "logger": "ai_tools_manager"
+  },
+  {
+    "timestamp": "2025-06-03T11:41:44.177774",
+    "level": "DEBUG",
+    "message": "生成密码: ************ (长度: 12)",
+    "logger": "ai_tools_manager"
+  },
+  {
+    "timestamp": "2025-06-03T11:41:44.178282",
+    "level": "DEBUG",
+    "message": "生成PIN: 1189",
+    "logger": "ai_tools_manager"
+  },
+  {
+    "timestamp": "2025-06-03T11:41:44.180022",
+    "level": "INFO",
+    "message": "账号生成成功: cursor_test0013402104@10minutemail.com",
+    "logger": "ai_tools_manager"
+  },
+  {
+    "timestamp": "2025-06-03T11:41:44.282452",
+    "level": "INFO",
+    "message": "开始生成账号信息",
+    "logger": "ai_tools_manager"
+  },
+  {
+    "timestamp": "2025-06-03T11:41:44.283514",
+    "level": "DEBUG",
+    "message": "生成用户名: cursor_test002220",
+    "logger": "ai_tools_manager"
+  },
+  {
+    "timestamp": "2025-06-03T11:41:44.283514",
+    "level": "DEBUG",
+    "message": "生成邮箱: cursor_test0022202104@10minutemail.com",
+    "logger": "ai_tools_manager"
+  },
+  {
+    "timestamp": "2025-06-03T11:41:44.284642",
+    "level": "DEBUG",
+    "message": "生成密码: ************ (长度: 12)",
+    "logger": "ai_tools_manager"
+  },
+  {
+    "timestamp": "2025-06-03T11:41:44.284642",
+    "level": "DEBUG",
+    "message": "生成PIN: 4792",
+    "logger": "ai_tools_manager"
+  },
+  {
+    "timestamp": "2025-06-03T11:41:44.285772",
+    "level": "INFO",
+    "message": "账号生成成功: cursor_test0022202104@10minutemail.com",
+    "logger": "ai_tools_manager"
+  },
+  {
+    "timestamp": "2025-06-03T11:41:44.388871",
+    "level": "INFO",
+    "message": "开始生成账号信息",
+    "logger": "ai_tools_manager"
+  },
+  {
+    "timestamp": "2025-06-03T11:41:44.391445",
+    "level": "DEBUG",
+    "message": "生成用户名: cursor_test003779",
+    "logger": "ai_tools_manager"
+  },
+  {
+    "timestamp": "2025-06-03T11:41:44.392681",
+    "level": "DEBUG",
+    "message": "生成邮箱: cursor_test0037792104@10minutemail.com",
+    "logger": "ai_tools_manager"
+  },
+  {
+    "timestamp": "2025-06-03T11:41:44.394246",
+    "level": "DEBUG",
+    "message": "生成密码: ************ (长度: 12)",
+    "logger": "ai_tools_manager"
+  },
+  {
+    "timestamp": "2025-06-03T11:41:44.395435",
+    "level": "DEBUG",
+    "message": "生成PIN: 9389",
+    "logger": "ai_tools_manager"
+  },
+  {
+    "timestamp": "2025-06-03T11:41:44.397526",
+    "level": "INFO",
+    "message": "账号生成成功: cursor_test0037792104@10minutemail.com",
+    "logger": "ai_tools_manager"
+  },
+  {
+    "timestamp": "2025-06-03T11:41:44.500356",
+    "level": "INFO",
+    "message": "开始生成账号信息",
+    "logger": "ai_tools_manager"
+  },
+  {
+    "timestamp": "2025-06-03T11:41:44.501377",
+    "level": "DEBUG",
+    "message": "生成用户名: cursor_test004872",
+    "logger": "ai_tools_manager"
+  },
+  {
+    "timestamp": "2025-06-03T11:41:44.502384",
+    "level": "DEBUG",
+    "message": "生成邮箱: cursor_test0048722104@10minutemail.com",
+    "logger": "ai_tools_manager"
+  },
+  {
+    "timestamp": "2025-06-03T11:41:44.502892",
+    "level": "DEBUG",
+    "message": "生成密码: ************ (长度: 12)",
+    "logger": "ai_tools_manager"
+  },
+  {
+    "timestamp": "2025-06-03T11:41:44.504895",
+    "level": "DEBUG",
+    "message": "生成PIN: 3935",
+    "logger": "ai_tools_manager"
+  },
+  {
+    "timestamp": "2025-06-03T11:41:44.506184",
+    "level": "INFO",
+    "message": "账号生成成功: cursor_test0048722104@10minutemail.com",
+    "logger": "ai_tools_manager"
+  },
+  {
+    "timestamp": "2025-06-03T11:41:44.608081",
+    "level": "INFO",
+    "message": "开始生成账号信息",
+    "logger": "ai_tools_manager"
+  },
+  {
+    "timestamp": "2025-06-03T11:41:44.609707",
+    "level": "DEBUG",
+    "message": "生成用户名: cursor_test005336",
+    "logger": "ai_tools_manager"
+  },
+  {
+    "timestamp": "2025-06-03T11:41:44.611220",
+    "level": "DEBUG",
+    "message": "生成邮箱: cursor_test0053362104@10minutemail.com",
+    "logger": "ai_tools_manager"
+  },
+  {
+    "timestamp": "2025-06-03T11:41:44.613144",
+    "level": "DEBUG",
+    "message": "生成密码: ************ (长度: 12)",
+    "logger": "ai_tools_manager"
+  },
+  {
+    "timestamp": "2025-06-03T11:41:44.613736",
+    "level": "DEBUG",
+    "message": "生成PIN: 9589",
+    "logger": "ai_tools_manager"
+  },
+  {
+    "timestamp": "2025-06-03T11:41:44.615848",
+    "level": "INFO",
+    "message": "账号生成成功: cursor_test0053362104@10minutemail.com",
+    "logger": "ai_tools_manager"
+  },
+  {
+    "timestamp": "2025-06-03T11:41:44.717509",
+    "level": "INFO",
+    "message": "批量生成完成: 5/5",
+    "logger": "ai_tools_manager"
+  },
+  {
+    "timestamp": "2025-06-03T11:41:44.722832",
+    "level": "INFO",
+    "message": "账号信息已导出: test_cursor_accounts.txt",
+    "logger": "ai_tools_manager"
+  },
+  {
+    "timestamp": "2025-06-03T11:41:44.726200",
+    "level": "INFO",
+    "message": "添加自定义域名: test-email.com",
+    "logger": "ai_tools_manager"
+  },
+  {
+    "timestamp": "2025-06-03T11:41:44.729197",
+    "level": "DEBUG",
+    "message": "生成密码: ******** (长度: 8)",
+    "logger": "ai_tools_manager"
+  },
+  {
+    "timestamp": "2025-06-03T11:41:44.731699",
+    "level": "DEBUG",
+    "message": "生成密码: ************ (长度: 12)",
+    "logger": "ai_tools_manager"
+  },
+  {
+    "timestamp": "2025-06-03T11:41:44.734481",
+    "level": "DEBUG",
+    "message": "生成密码: **************** (长度: 16)",
+    "logger": "ai_tools_manager"
+  },
+  {
+    "timestamp": "2025-06-03T11:41:44.735771",
+    "level": "DEBUG",
+    "message": "生成密码: ******************** (长度: 20)",
+    "logger": "ai_tools_manager"
+  },
+  {
+    "timestamp": "2025-06-03T11:41:55.734970",
+    "level": "INFO",
+    "message": "开始生成账号信息",
+    "logger": "ai_tools_manager"
+  },
+  {
+    "timestamp": "2025-06-03T11:41:55.736294",
+    "level": "DEBUG",
+    "message": "生成用户名: cursor790",
+    "logger": "ai_tools_manager"
+  },
+  {
+    "timestamp": "2025-06-03T11:41:55.738982",
+    "level": "DEBUG",
+    "message": "生成邮箱: cursor7902115@throwaway.email",
+    "logger": "ai_tools_manager"
+  },
+  {
+    "timestamp": "2025-06-03T11:41:55.741492",
+    "level": "DEBUG",
+    "message": "生成密码: ************ (长度: 12)",
+    "logger": "ai_tools_manager"
+  },
+  {
+    "timestamp": "2025-06-03T11:41:55.742522",
+    "level": "DEBUG",
+    "message": "生成PIN: 9436",
+    "logger": "ai_tools_manager"
+  },
+  {
+    "timestamp": "2025-06-03T11:41:55.743522",
+    "level": "INFO",
+    "message": "账号生成成功: cursor7902115@throwaway.email",
+    "logger": "ai_tools_manager"
+  },
+  {
+    "timestamp": "2025-06-03T11:41:55.747526",
+    "level": "INFO",
+    "message": "开始生成账号信息",
+    "logger": "ai_tools_manager"
+  },
+  {
+    "timestamp": "2025-06-03T11:41:55.748527",
+    "level": "DEBUG",
+    "message": "生成用户名: cursor373",
+    "logger": "ai_tools_manager"
+  },
+  {
+    "timestamp": "2025-06-03T11:41:55.749526",
+    "level": "DEBUG",
+    "message": "生成邮箱: cursor3732115@sharklasers.com",
+    "logger": "ai_tools_manager"
+  },
+  {
+    "timestamp": "2025-06-03T11:41:55.750526",
+    "level": "DEBUG",
+    "message": "生成密码: ************ (长度: 12)",
+    "logger": "ai_tools_manager"
+  },
+  {
+    "timestamp": "2025-06-03T11:41:55.751525",
+    "level": "DEBUG",
+    "message": "生成PIN: 5913",
+    "logger": "ai_tools_manager"
+  },
+  {
+    "timestamp": "2025-06-03T11:41:55.753035",
+    "level": "INFO",
+    "message": "账号生成成功: cursor3732115@sharklasers.com",
+    "logger": "ai_tools_manager"
+  },
+  {
+    "timestamp": "2025-06-03T11:41:55.756196",
+    "level": "INFO",
+    "message": "开始生成账号信息",
+    "logger": "ai_tools_manager"
+  },
+  {
+    "timestamp": "2025-06-03T11:41:55.757223",
+    "level": "DEBUG",
+    "message": "生成用户名: cursor719",
+    "logger": "ai_tools_manager"
+  },
+  {
+    "timestamp": "2025-06-03T11:41:55.758308",
+    "level": "DEBUG",
+    "message": "生成邮箱: cursor7192115@10minutemail.com",
+    "logger": "ai_tools_manager"
+  },
+  {
+    "timestamp": "2025-06-03T11:41:55.759338",
+    "level": "DEBUG",
+    "message": "生成密码: ************ (长度: 12)",
+    "logger": "ai_tools_manager"
+  },
+  {
+    "timestamp": "2025-06-03T11:41:55.760335",
+    "level": "DEBUG",
+    "message": "生成PIN: 5255",
+    "logger": "ai_tools_manager"
+  },
+  {
+    "timestamp": "2025-06-03T11:41:55.760335",
+    "level": "INFO",
+    "message": "账号生成成功: cursor7192115@10minutemail.com",
+    "logger": "ai_tools_manager"
+  },
+  {
+    "timestamp": "2025-06-03T11:41:55.763541",
+    "level": "INFO",
+    "message": "开始批量生成 5 个账号",
+    "logger": "ai_tools_manager"
+  },
+  {
+    "timestamp": "2025-06-03T11:41:55.765266",
+    "level": "INFO",
+    "message": "开始生成账号信息",
+    "logger": "ai_tools_manager"
+  },
+  {
+    "timestamp": "2025-06-03T11:41:55.766429",
+    "level": "DEBUG",
+    "message": "生成用户名: cursor_test001206",
+    "logger": "ai_tools_manager"
+  },
+  {
+    "timestamp": "2025-06-03T11:41:55.767468",
+    "level": "DEBUG",
+    "message": "生成邮箱: cursor_test0012062115@10minutemail.com",
+    "logger": "ai_tools_manager"
+  },
+  {
+    "timestamp": "2025-06-03T11:41:55.768528",
+    "level": "DEBUG",
+    "message": "生成密码: ************ (长度: 12)",
+    "logger": "ai_tools_manager"
+  },
+  {
+    "timestamp": "2025-06-03T11:41:55.770359",
+    "level": "DEBUG",
+    "message": "生成PIN: 4124",
+    "logger": "ai_tools_manager"
+  },
+  {
+    "timestamp": "2025-06-03T11:41:55.772745",
+    "level": "INFO",
+    "message": "账号生成成功: cursor_test0012062115@10minutemail.com",
+    "logger": "ai_tools_manager"
+  },
+  {
+    "timestamp": "2025-06-03T11:41:55.885071",
+    "level": "INFO",
+    "message": "开始生成账号信息",
+    "logger": "ai_tools_manager"
+  },
+  {
+    "timestamp": "2025-06-03T11:41:55.889908",
+    "level": "DEBUG",
+    "message": "生成用户名: cursor_test002136",
+    "logger": "ai_tools_manager"
+  },
+  {
+    "timestamp": "2025-06-03T11:41:55.891416",
+    "level": "DEBUG",
+    "message": "生成邮箱: cursor_test0021362115@10minutemail.com",
+    "logger": "ai_tools_manager"
+  },
+  {
+    "timestamp": "2025-06-03T11:41:55.895644",
+    "level": "DEBUG",
+    "message": "生成密码: ************ (长度: 12)",
+    "logger": "ai_tools_manager"
+  },
+  {
+    "timestamp": "2025-06-03T11:41:55.897649",
+    "level": "DEBUG",
+    "message": "生成PIN: 9748",
+    "logger": "ai_tools_manager"
+  },
+  {
+    "timestamp": "2025-06-03T11:41:55.911544",
+    "level": "INFO",
+    "message": "账号生成成功: cursor_test0021362115@10minutemail.com",
+    "logger": "ai_tools_manager"
+  },
+  {
+    "timestamp": "2025-06-03T11:41:56.015486",
+    "level": "INFO",
+    "message": "开始生成账号信息",
+    "logger": "ai_tools_manager"
+  },
+  {
+    "timestamp": "2025-06-03T11:41:56.017007",
+    "level": "DEBUG",
+    "message": "生成用户名: cursor_test003312",
+    "logger": "ai_tools_manager"
+  },
+  {
+    "timestamp": "2025-06-03T11:41:56.018546",
+    "level": "DEBUG",
+    "message": "生成邮箱: cursor_test0033122116@10minutemail.com",
+    "logger": "ai_tools_manager"
+  },
+  {
+    "timestamp": "2025-06-03T11:41:56.020546",
+    "level": "DEBUG",
+    "message": "生成密码: ************ (长度: 12)",
+    "logger": "ai_tools_manager"
+  },
+  {
+    "timestamp": "2025-06-03T11:41:56.023068",
+    "level": "DEBUG",
+    "message": "生成PIN: 1396",
+    "logger": "ai_tools_manager"
+  },
+  {
+    "timestamp": "2025-06-03T11:41:56.025148",
+    "level": "INFO",
+    "message": "账号生成成功: cursor_test0033122116@10minutemail.com",
+    "logger": "ai_tools_manager"
+  },
+  {
+    "timestamp": "2025-06-03T11:41:56.127484",
+    "level": "INFO",
+    "message": "开始生成账号信息",
+    "logger": "ai_tools_manager"
+  },
+  {
+    "timestamp": "2025-06-03T11:41:56.129565",
+    "level": "DEBUG",
+    "message": "生成用户名: cursor_test004260",
+    "logger": "ai_tools_manager"
+  },
+  {
+    "timestamp": "2025-06-03T11:41:56.133090",
+    "level": "DEBUG",
+    "message": "生成邮箱: cursor_test0042602116@10minutemail.com",
+    "logger": "ai_tools_manager"
+  },
+  {
+    "timestamp": "2025-06-03T11:41:56.135093",
+    "level": "DEBUG",
+    "message": "生成密码: ************ (长度: 12)",
+    "logger": "ai_tools_manager"
+  },
+  {
+    "timestamp": "2025-06-03T11:41:56.138180",
+    "level": "DEBUG",
+    "message": "生成PIN: 3850",
+    "logger": "ai_tools_manager"
+  },
+  {
+    "timestamp": "2025-06-03T11:41:56.140560",
+    "level": "INFO",
+    "message": "账号生成成功: cursor_test0042602116@10minutemail.com",
+    "logger": "ai_tools_manager"
+  },
+  {
+    "timestamp": "2025-06-03T11:41:56.243755",
+    "level": "INFO",
+    "message": "开始生成账号信息",
+    "logger": "ai_tools_manager"
+  },
+  {
+    "timestamp": "2025-06-03T11:41:56.246628",
+    "level": "DEBUG",
+    "message": "生成用户名: cursor_test005285",
+    "logger": "ai_tools_manager"
+  },
+  {
+    "timestamp": "2025-06-03T11:41:56.250631",
+    "level": "DEBUG",
+    "message": "生成邮箱: cursor_test0052852116@10minutemail.com",
+    "logger": "ai_tools_manager"
+  },
+  {
+    "timestamp": "2025-06-03T11:41:56.254443",
+    "level": "DEBUG",
+    "message": "生成密码: ************ (长度: 12)",
+    "logger": "ai_tools_manager"
+  },
+  {
+    "timestamp": "2025-06-03T11:41:56.258658",
+    "level": "DEBUG",
+    "message": "生成PIN: 9099",
+    "logger": "ai_tools_manager"
+  },
+  {
+    "timestamp": "2025-06-03T11:41:56.263014",
+    "level": "INFO",
+    "message": "账号生成成功: cursor_test0052852116@10minutemail.com",
+    "logger": "ai_tools_manager"
+  },
+  {
+    "timestamp": "2025-06-03T11:41:56.366546",
+    "level": "INFO",
+    "message": "批量生成完成: 5/5",
+    "logger": "ai_tools_manager"
+  },
+  {
+    "timestamp": "2025-06-03T11:41:56.370963",
+    "level": "INFO",
+    "message": "账号信息已导出: test_cursor_accounts.txt",
+    "logger": "ai_tools_manager"
+  },
+  {
+    "timestamp": "2025-06-03T11:41:56.375459",
+    "level": "INFO",
+    "message": "添加自定义域名: test-email.com",
+    "logger": "ai_tools_manager"
+  },
+  {
+    "timestamp": "2025-06-03T11:41:56.380746",
+    "level": "DEBUG",
+    "message": "生成密码: ******** (长度: 8)",
+    "logger": "ai_tools_manager"
+  },
+  {
+    "timestamp": "2025-06-03T11:41:56.382288",
+    "level": "DEBUG",
+    "message": "生成密码: ************ (长度: 12)",
+    "logger": "ai_tools_manager"
+  },
+  {
+    "timestamp": "2025-06-03T11:41:56.384338",
+    "level": "DEBUG",
+    "message": "生成密码: **************** (长度: 16)",
+    "logger": "ai_tools_manager"
+  },
+  {
+    "timestamp": "2025-06-03T11:41:56.386397",
+    "level": "DEBUG",
+    "message": "生成密码: ******************** (长度: 20)",
+    "logger": "ai_tools_manager"
+  },
+  {
+    "timestamp": "2025-06-03T11:42:35.078660",
+    "level": "INFO",
+    "message": "开始生成账号信息",
+    "logger": "ai_tools_manager"
+  },
+  {
+    "timestamp": "2025-06-03T11:42:35.080167",
+    "level": "DEBUG",
+    "message": "生成用户名: cursor640",
+    "logger": "ai_tools_manager"
+  },
+  {
+    "timestamp": "2025-06-03T11:42:35.081170",
+    "level": "DEBUG",
+    "message": "生成邮箱: cursor6402155@yopmail.com",
+    "logger": "ai_tools_manager"
+  },
+  {
+    "timestamp": "2025-06-03T11:42:35.082678",
+    "level": "DEBUG",
+    "message": "生成密码: ************ (长度: 12)",
+    "logger": "ai_tools_manager"
+  },
+  {
+    "timestamp": "2025-06-03T11:42:35.083807",
+    "level": "DEBUG",
+    "message": "生成PIN: 1847",
+    "logger": "ai_tools_manager"
+  },
+  {
+    "timestamp": "2025-06-03T11:42:35.085820",
+    "level": "INFO",
+    "message": "账号生成成功: cursor6402155@yopmail.com",
+    "logger": "ai_tools_manager"
+  },
+  {
+    "timestamp": "2025-06-03T11:42:57.628681",
+    "level": "INFO",
+    "message": "设置已加载",
+    "logger": "ai_tools_manager"
+  },
+  {
+    "timestamp": "2025-06-03T11:47:57.749151",
+    "level": "INFO",
+    "message": "设置已加载",
+    "logger": "ai_tools_manager"
+  },
+  {
+    "timestamp": "2025-06-03T11:53:14.913962",
+    "level": "INFO",
+    "message": "开始生成账号信息",
+    "logger": "ai_tools_manager"
+  },
+  {
+    "timestamp": "2025-06-03T11:53:14.916144",
+    "level": "DEBUG",
+    "message": "生成用户名: cursor927",
+    "logger": "ai_tools_manager"
+  },
+  {
+    "timestamp": "2025-06-03T11:53:14.917687",
+    "level": "DEBUG",
+    "message": "生成邮箱: cursor9272794@hjj0185.email",
+    "logger": "ai_tools_manager"
+  },
+  {
+    "timestamp": "2025-06-03T11:53:14.918707",
+    "level": "DEBUG",
+    "message": "生成密码: ************ (长度: 12)",
+    "logger": "ai_tools_manager"
+  },
+  {
+    "timestamp": "2025-06-03T11:53:14.920221",
+    "level": "DEBUG",
+    "message": "生成PIN: 0104",
+    "logger": "ai_tools_manager"
+  },
+  {
+    "timestamp": "2025-06-03T11:53:14.921261",
+    "level": "INFO",
+    "message": "账号生成成功: cursor9272794@hjj0185.email",
+    "logger": "ai_tools_manager"
+  },
+  {
+    "timestamp": "2025-06-03T11:53:47.012578",
+    "level": "INFO",
+    "message": "设置已加载",
+    "logger": "ai_tools_manager"
+  },
+  {
+    "timestamp": "2025-06-03T11:54:33.545547",
+    "level": "INFO",
+    "message": "设置已加载",
+    "logger": "ai_tools_manager"
+  }
+]

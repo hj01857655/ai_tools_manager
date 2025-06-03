@@ -101,7 +101,22 @@ class SidebarNavigation(QWidget):
             "augment", "Augment", "AI代码补全和开发工具", "⚡"
         )
         nav_layout.addWidget(augment_btn)
-        
+
+        # 系统功能分组
+        self.add_category_header(nav_layout, "🔧 系统")
+
+        # 日志页面
+        logs_btn = self.create_nav_button(
+            "logs", "日志", "查看系统日志和操作记录", "📋"
+        )
+        nav_layout.addWidget(logs_btn)
+
+        # 设置页面
+        settings_btn = self.create_nav_button(
+            "settings", "设置", "应用程序配置和偏好设置", "⚙️"
+        )
+        nav_layout.addWidget(settings_btn)
+
         # 弹性空间
         nav_layout.addStretch()
         

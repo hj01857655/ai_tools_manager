@@ -24,9 +24,16 @@ if __name__ == "__main__":
     app.setApplicationVersion("1.0")
     app.setOrganizationName("AI Tools Manager")
 
-    # 设置高DPI支持
-    app.setAttribute(Qt.AA_EnableHighDpiScaling, True)
-    app.setAttribute(Qt.AA_UseHighDpiPixmaps, True)
+    # 设置高DPI支持（兼容Qt6）
+    try:
+        # Qt6中这些属性已弃用，但为了兼容性保留
+        if hasattr(Qt, 'AA_EnableHighDpiScaling'):
+            app.setAttribute(Qt.AA_EnableHighDpiScaling, True)
+        if hasattr(Qt, 'AA_UseHighDpiPixmaps'):
+            app.setAttribute(Qt.AA_UseHighDpiPixmaps, True)
+    except AttributeError:
+        # Qt6中可能不存在这些属性
+        pass
 
     # 创建主窗口
     window = MainWindow()

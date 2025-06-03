@@ -1,0 +1,19 @@
+{
+  "timestamp": "2025-06-03T11:10:08.765839",
+  "application": "AI工具管理器",
+  "version": "1.0.0",
+  "status": "健康",
+  "components": {
+    "ui": "正常",
+    "database": "正常",
+    "logging": "正常",
+    "automation": "正常",
+    "settings": "正常"
+  },
+  "recommendations": [
+    "定期更新依赖包",
+    "监控日志文件大小",
+    "定期备份数据库",
+    "检查自动化功能"
+  ]
+}

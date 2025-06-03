@@ -1,0 +1,44 @@
+# 生成的账号信息
+# 生成时间: 2025-06-03T11:41:56.369729
+# 账号数量: 5
+
+账号 1:
+  用户名: cursor_test001206
+  邮箱: cursor_test0012062115@10minutemail.com
+  密码: !XnaHUXAl@w3
+  域名: 10minutemail.com
+  PIN: 4124
+  生成时间: 2025-06-03T11:41:55.772172
+
+账号 2:
+  用户名: cursor_test002136
+  邮箱: cursor_test0021362115@10minutemail.com
+  密码: *o4iQQgWkkRI
+  域名: 10minutemail.com
+  PIN: 9748
+  生成时间: 2025-06-03T11:41:55.899649
+
+账号 3:
+  用户名: cursor_test003312
+  邮箱: cursor_test0033122116@10minutemail.com
+  密码: 9JQ@1i!pT9@G
+  域名: 10minutemail.com
+  PIN: 1396
+  生成时间: 2025-06-03T11:41:56.025148
+
+账号 4:
+  用户名: cursor_test004260
+  邮箱: cursor_test0042602116@10minutemail.com
+  密码: dgf9H^m1m8xG
+  域名: 10minutemail.com
+  PIN: 3850
+  生成时间: 2025-06-03T11:41:56.140560
+
+账号 5:
+  用户名: cursor_test005285
+  邮箱: cursor_test0052852116@10minutemail.com
+  密码: tTeZBGT31pL*
+  域名: 10minutemail.com
+  PIN: 9099
+  生成时间: 2025-06-03T11:41:56.262348
+

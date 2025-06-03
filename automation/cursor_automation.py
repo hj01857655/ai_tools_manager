@@ -1,11 +1,11 @@
 """
 Cursor自动化注册登录
 """
-import time
-from .base_automation import (
+from automation.base_automation import (
     BaseAutomation, AutomationResult, AutomationStatus,
     RegistrationData, LoginData
 )
+from utils.account_generator import get_account_generator, GeneratedAccount
 
 
 class CursorAutomation(BaseAutomation):
@@ -15,10 +15,63 @@ class CursorAutomation(BaseAutomation):
         return "Cursor"
     
     def get_registration_url(self) -> str:
-        return "https://cursor.sh/sign-up"
-    
+        return "https://authenticator.cursor.sh/sign-up"
+
     def get_login_url(self) -> str:
-        return "https://cursor.sh/sign-in"
+        return "https://www.cursor.com/api/auth/login"
+
+    def get_homepage_url(self) -> str:
+        return "https://www.cursor.com/"
+
+    def generate_account(self, domain: str = None, include_pin: bool = False) -> GeneratedAccount:
+        """生成Cursor账号信息"""
+        generator = get_account_generator()
+        return generator.generate_account(
+            domain=domain,  # 使用传入的域名或默认域名
+            username_prefix="cursor",
+            include_pin=include_pin,
+            password_length=12
+        )
+
+    def register_with_generated_account(self, domain: str = None, include_pin: bool = False) -> AutomationResult:
+        """使用生成的账号信息进行注册"""
+        try:
+            # 生成账号信息
+            generated_account = self.generate_account(domain=domain, include_pin=include_pin)
+
+            # 转换为注册数据
+            reg_data = RegistrationData(
+                email=generated_account.email,
+                password=generated_account.password,
+                username=generated_account.username,
+                first_name="Cursor",
+                last_name="User"
+            )
+
+            # 执行注册
+            result = self.register(reg_data)
+
+            # 如果注册成功或需要验证，添加生成的账号信息到结果
+            if result.status in [AutomationStatus.SUCCESS, AutomationStatus.EMAIL_VERIFICATION_REQUIRED]:
+                result.data.update({
+                    "generated_account": {
+                        "username": generated_account.username,
+                        "email": generated_account.email,
+                        "password": generated_account.password,
+                        "domain": generated_account.domain,
+                        "pin": generated_account.pin,
+                        "generated_at": generated_account.generated_at.isoformat()
+                    }
+                })
+
+            return result
+
+        except Exception as e:
+            return AutomationResult(
+                status=AutomationStatus.FAILED,
+                message=f"生成账号注册失败: {str(e)}",
+                screenshot_path=self.take_screenshot("cursor_generated_register_failed")
+            )
     
     def register(self, data: RegistrationData) -> AutomationResult:
         """注册Cursor账号"""

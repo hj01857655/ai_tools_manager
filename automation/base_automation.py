@@ -2,7 +2,7 @@
 自动化基类
 """
 from abc import ABC, abstractmethod
-from typing import Dict, Any, Optional, Tuple
+from typing import Dict, Any, Optional
 from dataclasses import dataclass
 from enum import Enum
 import time
@@ -123,26 +123,27 @@ class BaseAutomation(ABC):
     def init_browser(self) -> bool:
         """初始化浏览器"""
         try:
-            from DrissionPage import ChromiumPage, ChromiumOptions
-            
+            from DrissionPage import ChromiumOptions, Chromium
+
             # 配置浏览器选项
             options = ChromiumOptions()
             if self.headless:
                 options.headless()
-            
+
             # 设置用户代理
             options.set_user_agent(
                 "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 "
                 "(KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
             )
-            
+
             # 禁用图片加载以提高速度
             options.set_pref('profile.managed_default_content_settings.images', 2)
-            
-            # 创建页面对象
-            self.page = ChromiumPage(addr_or_opts=options)
+
+            # 创建浏览器对象
+            browser = Chromium(addr_or_opts=options)
+            self.page = browser.latest_tab
             self.page.set.timeouts(base=self.timeout)
-            
+
             return True
         except Exception as e:
             print(f"初始化浏览器失败: {e}")
@@ -152,7 +153,9 @@ class BaseAutomation(ABC):
         """关闭浏览器"""
         if self.page:
             try:
-                self.page.quit()
+                # 关闭浏览器
+                browser = self.page.browser
+                browser.quit()
             except:
                 pass
             self.page = None

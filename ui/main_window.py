@@ -16,6 +16,9 @@ from ui.styles import get_theme_style
 from ui.sidebar_navigation import SidebarNavigation
 from ui.account_page import AccountPage
 from ui.home_page import HomePage
+from ui.logs_page import LogsPage
+from ui.settings_page import SettingsPage
+from ui.cursor_enhanced_page import CursorEnhancedPage
 
 
 
@@ -92,16 +95,33 @@ class MainWindow(QMainWindow):
         self.page_stack.addWidget(home_page)
 
         # 创建工具页面
-        page_configs = [
-            ("cursor", "Cursor"),
+        # Cursor使用增强页面
+        cursor_page = CursorEnhancedPage()
+        self.pages["cursor"] = cursor_page
+        self.page_stack.addWidget(cursor_page)
+
+        # 其他工具使用标准页面
+        other_page_configs = [
             ("windsurf", "Windsurf"),
             ("augment", "Augment")
         ]
 
-        for page_id, _ in page_configs:
+        for page_id, _ in other_page_configs:
             page = AccountPage(page_id)
             self.pages[page_id] = page
             self.page_stack.addWidget(page)
+
+        # 创建系统页面
+        # 日志页面
+        logs_page = LogsPage()
+        self.pages["logs"] = logs_page
+        self.page_stack.addWidget(logs_page)
+
+        # 设置页面
+        settings_page = SettingsPage()
+        settings_page.settings_changed.connect(self.on_settings_changed)
+        self.pages["settings"] = settings_page
+        self.page_stack.addWidget(settings_page)
 
 
 
@@ -169,6 +189,18 @@ class MainWindow(QMainWindow):
                 self.status_label.setText("当前页面: 首页")
                 # 刷新首页数据
                 page.refresh_data()
+            elif page_id == "logs":
+                self.status_label.setText("当前页面: 日志")
+                # 刷新日志数据
+                page.refresh_logs()
+            elif page_id == "settings":
+                self.status_label.setText("当前页面: 设置")
+                # 加载设置数据
+                page.load_settings()
+            elif page_id == "cursor":
+                self.status_label.setText("当前页面: Cursor")
+                # 刷新Cursor增强页面数据
+                page.refresh_accounts()
             else:
                 page_name = page.account_type.value
                 self.status_label.setText(f"当前页面: {page_name}")
@@ -185,6 +217,30 @@ class MainWindow(QMainWindow):
             current_widget.refresh_accounts()
         elif isinstance(current_widget, HomePage):
             current_widget.refresh_data()
+        elif isinstance(current_widget, LogsPage):
+            current_widget.refresh_logs()
+        elif isinstance(current_widget, SettingsPage):
+            current_widget.load_settings()
+        elif isinstance(current_widget, CursorEnhancedPage):
+            current_widget.refresh_accounts()
+
+    def on_settings_changed(self):
+        """设置变更处理"""
+        try:
+            # 重新应用主题
+            self.apply_theme()
+
+            # 刷新所有页面
+            self.refresh_current_page()
+
+            # 记录日志
+            from utils.logger import get_logger
+            logger = get_logger()
+            logger.info("应用设置已更新")
+
+        except Exception as e:
+            from PySide6.QtWidgets import QMessageBox
+            QMessageBox.warning(self, "警告", f"应用设置变更失败: {str(e)}")
 
     def apply_theme(self):
         """应用主题"""
