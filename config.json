@@ -1,9 +1,9 @@
 {
     "window": {
-        "width": 1200,
-        "height": 800,
-        "x": 248,
-        "y": 30
+        "width": 1536,
+        "height": 793,
+        "x": 0,
+        "y": 23
     },
     "database": {
         "path": "accounts.db"
@@ -13,13 +13,32 @@
         "require_password": false
     },
     "ui": {
-        "theme": "light",
+        "theme": "浅色主题",
         "language": "zh_CN",
-        "show_sensitive_data": false
+        "show_sensitive_data": false,
+        "font_size": 12
     },
     "backup": {
         "auto_backup": true,
         "backup_interval_days": 7,
         "backup_path": "backups"
+    },
+    "general": {
+        "startup": false,
+        "minimize_to_tray": false,
+        "auto_save": true
+    },
+    "automation": {
+        "headless": true,
+        "timeout": 30
+    },
+    "cursor": {
+        "domain": "hj0185.email",
+        "tempmail": "uhbedk@mailto.plus",
+        "pin": ""
+    },
+    "logging": {
+        "level": "INFO",
+        "directory": "logs"
     }
 }

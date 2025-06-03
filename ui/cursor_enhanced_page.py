@@ -12,7 +12,6 @@ from PySide6.QtGui import QFont, QColor
 
 from models.account import AccountType
 from ui.account_page import AccountPage
-from ui.cursor_register_dialog import CursorRegisterDialog
 from utils.logger import get_logger
 
 
@@ -82,6 +81,12 @@ class CursorInfoWidget(QFrame):
         register_btn.setObjectName("linkButton")
         register_btn.clicked.connect(lambda: self.open_url("https://authenticator.cursor.sh/sign-up"))
         links_layout.addWidget(register_btn, 0, 1)
+
+        # 自动注册按钮
+        auto_register_btn = QPushButton("🤖 自动注册")
+        auto_register_btn.setObjectName("primaryButton")
+        auto_register_btn.clicked.connect(self.start_auto_register)
+        links_layout.addWidget(auto_register_btn, 0, 2)
         
         # 登录链接
         login_btn = QPushButton("🔐 登录账号")
@@ -104,13 +109,66 @@ class CursorInfoWidget(QFrame):
         try:
             import webbrowser
             webbrowser.open(url)
-            
+
             # 记录日志
             logger = get_logger()
             logger.info(f"打开Cursor链接: {url}")
-            
+
         except Exception as e:
             QMessageBox.warning(self, "错误", f"无法打开链接: {str(e)}")
+
+    def start_auto_register(self):
+        """开始自动注册"""
+        try:
+            from automation.cursor_automation import CursorAutomation
+            from utils.config import get_config_manager
+
+            # 获取配置
+            config_manager = get_config_manager()
+            domain = config_manager.get('cursor.domain', 'hjj0185.email')
+            pin = config_manager.get('cursor.pin', '')
+
+            logger = get_logger()
+            logger.info("🤖 开始Cursor自动注册")
+
+            # 创建自动化实例
+            cursor_automation = CursorAutomation()
+
+            # 执行自动注册
+            result = cursor_automation.register_with_generated_account(
+                domain=domain,
+                include_pin=bool(pin),
+                pin=pin,
+                headless=False  # 可视模式
+            )
+
+            # 处理结果
+            if result.status.name in ['SUCCESS', 'EMAIL_VERIFICATION_REQUIRED']:
+                if result.data and 'generated_account' in result.data:
+                    account_data = result.data['generated_account']
+                    message = f"✅ 自动注册成功！\n\n"
+                    message += f"邮箱: {account_data['email']}\n"
+                    message += f"密码: {account_data['password']}\n"
+                    message += f"姓名: {account_data['first_name']} {account_data['last_name']}\n"
+                    if account_data.get('pin'):
+                        message += f"PIN: {account_data['pin']}\n"
+
+                    if result.status.name == 'EMAIL_VERIFICATION_REQUIRED':
+                        message += f"\n📧 需要邮箱验证，请检查邮箱并点击验证链接"
+
+                    QMessageBox.information(self, "自动注册成功", message)
+                    logger.info(f"✅ Cursor自动注册成功: {account_data['email']}")
+                else:
+                    QMessageBox.information(self, "注册成功", result.message)
+            else:
+                QMessageBox.warning(self, "注册失败", f"自动注册失败: {result.message}")
+                logger.error(f"❌ Cursor自动注册失败: {result.message}")
+
+        except Exception as e:
+            error_msg = f"自动注册异常: {str(e)}"
+            logger = get_logger()
+            logger.error(error_msg)
+            QMessageBox.critical(self, "错误", error_msg)
     
     def apply_styles(self):
         """应用样式"""

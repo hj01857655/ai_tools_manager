@@ -372,14 +372,11 @@ class AccountPage(QWidget):
                 QMessageBox.critical(self, "错误", f"删除账号失败: {str(e)}")
     
     def show_auto_register(self):
-        """显示自动注册对话框"""
+        """执行自动注册"""
         try:
-            # Cursor使用专门的注册配置对话框
+            # Cursor使用直接自动注册
             if self.account_type_id == "cursor":
-                from ui.cursor_register_dialog import CursorRegisterDialog
-                dialog = CursorRegisterDialog(self)
-                dialog.accounts_generated.connect(self.on_cursor_accounts_generated)
-                dialog.exec()
+                self.start_cursor_auto_register()
             else:
                 # 其他工具使用通用自动化对话框
                 dialog = AutomationDialog(self)
@@ -392,7 +389,62 @@ class AccountPage(QWidget):
                 dialog.automation_completed.connect(self.on_automation_completed)
                 dialog.exec()
         except Exception as e:
-            QMessageBox.critical(self, "错误", f"打开自动注册对话框失败: {str(e)}")
+            QMessageBox.critical(self, "错误", f"自动注册失败: {str(e)}")
+
+    def start_cursor_auto_register(self):
+        """开始Cursor自动注册"""
+        try:
+            from automation.cursor_automation import CursorAutomation
+            from utils.config import get_config_manager
+
+            # 获取配置
+            config_manager = get_config_manager()
+            domain = config_manager.get('cursor.domain', 'hjj0185.email')
+            pin = config_manager.get('cursor.pin', '')
+
+            self.logger.info("🤖 开始Cursor自动注册")
+
+            # 创建自动化实例
+            cursor_automation = CursorAutomation()
+
+            # 执行自动注册
+            result = cursor_automation.register_with_generated_account(
+                domain=domain,
+                include_pin=bool(pin),
+                pin=pin,
+                headless=False  # 可视模式
+            )
+
+            # 处理结果
+            if result.status.name in ['SUCCESS', 'EMAIL_VERIFICATION_REQUIRED']:
+                if result.data and 'generated_account' in result.data:
+                    account_data = result.data['generated_account']
+                    message = f"✅ 自动注册成功！\n\n"
+                    message += f"邮箱: {account_data['email']}\n"
+                    message += f"密码: {account_data['password']}\n"
+                    message += f"姓名: {account_data['first_name']} {account_data['last_name']}\n"
+                    if account_data.get('pin'):
+                        message += f"PIN: {account_data['pin']}\n"
+
+                    if result.status.name == 'EMAIL_VERIFICATION_REQUIRED':
+                        message += f"\n📧 需要邮箱验证，请检查邮箱并点击验证链接"
+
+                    QMessageBox.information(self, "自动注册成功", message)
+                    self.logger.info(f"✅ Cursor自动注册成功: {account_data['email']}")
+
+                    # 刷新账号列表
+                    self.refresh_accounts()
+                else:
+                    QMessageBox.information(self, "注册成功", result.message)
+                    self.refresh_accounts()
+            else:
+                QMessageBox.warning(self, "注册失败", f"自动注册失败: {result.message}")
+                self.logger.error(f"❌ Cursor自动注册失败: {result.message}")
+
+        except Exception as e:
+            error_msg = f"自动注册异常: {str(e)}"
+            self.logger.error(error_msg)
+            QMessageBox.critical(self, "错误", error_msg)
     
     def show_auto_login(self):
         """显示自动登录对话框"""

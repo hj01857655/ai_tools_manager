@@ -120,33 +120,81 @@ class BaseAutomation(ABC):
         """登录账号"""
         pass
     
-    def init_browser(self) -> bool:
+    def init_browser(self, chrome_path: str = None, headless: bool = None) -> bool:
         """初始化浏览器"""
         try:
             from DrissionPage import ChromiumOptions, Chromium
+            import os
+
+            print(f"🌐 开始初始化浏览器...")
 
             # 配置浏览器选项
             options = ChromiumOptions()
-            if self.headless:
+            print(f"✅ ChromiumOptions创建成功")
+
+            # 查找Chrome浏览器路径
+            chrome_paths = [
+                chrome_path,
+                r"C:\Program Files\Google\Chrome\Application\chrome.exe",
+                r"C:\Program Files (x86)\Google\Chrome\Application\chrome.exe",
+                r"C:\Users\{}\AppData\Local\Google\Chrome\Application\chrome.exe".format(os.getenv('USERNAME', 'User'))
+            ]
+
+            found_chrome = None
+            for path in chrome_paths:
+                if path and os.path.exists(path):
+                    found_chrome = path
+                    break
+
+            if found_chrome:
+                options.set_browser_path(found_chrome)
+                print(f"✅ 找到Chrome: {found_chrome}")
+            else:
+                print(f"⚠️ 未找到Chrome，使用系统默认")
+
+            # 设置无头模式
+            use_headless = headless if headless is not None else self.headless
+            if use_headless:
                 options.headless()
+                print(f"✅ 启用无头模式")
+            else:
+                print(f"✅ 启用可视模式")
 
             # 设置用户代理
             options.set_user_agent(
                 "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 "
                 "(KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
             )
+            print(f"✅ 设置用户代理")
 
-            # 禁用图片加载以提高速度
-            options.set_pref('profile.managed_default_content_settings.images', 2)
+            # 禁用通知和位置共享
+            options.set_pref('profile.default_content_setting_values.notifications', 2)
+            options.set_pref('profile.default_content_setting_values.geolocation', 2)
+            print(f"✅ 配置浏览器偏好设置")
+
+            # 设置窗口大小
+            if not use_headless:
+                options.set_argument('--window-size=1200,800')
+                print(f"✅ 设置窗口大小: 1200x800")
 
             # 创建浏览器对象
+            print(f"🚀 正在启动浏览器...")
             browser = Chromium(addr_or_opts=options)
             self.page = browser.latest_tab
             self.page.set.timeouts(base=self.timeout)
 
+            print(f"✅ 浏览器初始化成功")
+            if hasattr(self, 'logger'):
+                self.logger.info(f"浏览器初始化成功，无头模式: {use_headless}")
             return True
+
         except Exception as e:
-            print(f"初始化浏览器失败: {e}")
+            error_msg = f"初始化浏览器失败: {e}"
+            print(f"❌ {error_msg}")
+            if hasattr(self, 'logger'):
+                self.logger.error(error_msg)
+            import traceback
+            traceback.print_exc()
             return False
     
     def close_browser(self):

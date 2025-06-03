@@ -4,8 +4,8 @@
 from PySide6.QtWidgets import (
     QWidget, QVBoxLayout, QHBoxLayout, QLabel, QPushButton, 
     QGroupBox, QFormLayout, QLineEdit, QSpinBox, QCheckBox,
-    QComboBox, QSlider, QTextEdit, QFileDialog, QMessageBox,
-    QTabWidget, QScrollArea, QFrame
+    QComboBox, QTextEdit, QFileDialog, QMessageBox,
+    QTabWidget, QScrollArea
 )
 from PySide6.QtCore import Qt, Signal
 from PySide6.QtGui import QFont
@@ -223,7 +223,36 @@ class SettingsPage(QWidget):
         auto_layout.addRow("最大延迟:", self.delay_max_spinbox)
         
         layout.addWidget(auto_group)
-        
+
+        # Cursor注册配置
+        cursor_group = QGroupBox("Cursor注册配置")
+        cursor_layout = QFormLayout(cursor_group)
+
+        # 域名配置
+        self.cursor_domain_edit = QLineEdit()
+        self.cursor_domain_edit.setText("hjj0185.email")
+        self.cursor_domain_edit.setPlaceholderText("输入邮箱域名，如: hjj0185.email")
+        cursor_layout.addRow("邮箱域名:", self.cursor_domain_edit)
+
+        # 临时邮箱配置
+        self.cursor_tempmail_edit = QLineEdit()
+        self.cursor_tempmail_edit.setText("tempmail.plus")
+        self.cursor_tempmail_edit.setPlaceholderText("临时邮箱域名，用于接收验证码")
+        cursor_layout.addRow("临时邮箱:", self.cursor_tempmail_edit)
+
+        # PIN配置
+        self.cursor_pin_edit = QLineEdit()
+        self.cursor_pin_edit.setPlaceholderText("输入PIN码（可选），搭配临时邮箱使用")
+        self.cursor_pin_edit.setMaxLength(10)  # 限制PIN长度
+        cursor_layout.addRow("PIN码:", self.cursor_pin_edit)
+
+        # 说明文本
+        cursor_info = QLabel("域名用于生成邮箱账号，临时邮箱+PIN用于接收验证码")
+        cursor_info.setStyleSheet("color: #666; font-size: 12px;")
+        cursor_layout.addRow("", cursor_info)
+
+        layout.addWidget(cursor_group)
+
         layout.addStretch()
         self.tab_widget.addTab(tab, "🤖 自动化")
     
@@ -460,7 +489,17 @@ class SettingsPage(QWidget):
             
             timeout = self.config_manager.get('automation.timeout', 30)
             self.browser_timeout_spinbox.setValue(timeout)
-            
+
+            # Cursor注册配置
+            cursor_domain = self.config_manager.get('cursor.domain', 'hjj0185.email')
+            self.cursor_domain_edit.setText(cursor_domain)
+
+            cursor_tempmail = self.config_manager.get('cursor.tempmail', 'tempmail.plus')
+            self.cursor_tempmail_edit.setText(cursor_tempmail)
+
+            cursor_pin = self.config_manager.get('cursor.pin', '')
+            self.cursor_pin_edit.setText(cursor_pin)
+
             # 日志设置
             log_level = self.config_manager.get('logging.level', 'INFO')
             self.log_level_combo.setCurrentText(log_level)
@@ -493,7 +532,12 @@ class SettingsPage(QWidget):
             # 保存自动化设置
             self.config_manager.set('automation.headless', self.headless_checkbox.isChecked())
             self.config_manager.set('automation.timeout', self.browser_timeout_spinbox.value())
-            
+
+            # 保存Cursor注册配置
+            self.config_manager.set('cursor.domain', self.cursor_domain_edit.text().strip())
+            self.config_manager.set('cursor.tempmail', self.cursor_tempmail_edit.text().strip())
+            self.config_manager.set('cursor.pin', self.cursor_pin_edit.text().strip())
+
             # 保存日志设置
             self.config_manager.set('logging.level', self.log_level_combo.currentText())
             self.config_manager.set('logging.directory', self.log_dir_edit.text())
@@ -502,7 +546,7 @@ class SettingsPage(QWidget):
             self.config_manager.set('database.path', self.db_path_edit.text())
             
             # 保存配置
-            self.config_manager.save()
+            self.config_manager.save_config()
             
             self.logger.info("设置已应用")
             QMessageBox.information(self, "成功", "设置已保存并应用")

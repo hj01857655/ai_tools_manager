@@ -164,10 +164,11 @@ class AccountGenerator:
             self.logger.error(f"生成PIN失败: {e}")
             return str(random.randint(1000, 9999))
     
-    def generate_account(self, 
-                        domain: str = None, 
+    def generate_account(self,
+                        domain: str = None,
                         username_prefix: str = None,
                         include_pin: bool = False,
+                        pin: str = None,
                         password_length: int = None) -> GeneratedAccount:
         """生成完整账号信息"""
         try:
@@ -181,9 +182,17 @@ class AccountGenerator:
             
             # 生成密码
             password = self.generate_password(length=password_length)
-            
-            # 生成PIN（可选）
-            pin = self.generate_pin() if include_pin else None
+
+            # 处理PIN（优先使用传入的PIN，否则根据include_pin决定是否生成）
+            if pin:
+                # 使用传入的PIN
+                final_pin = pin
+            elif include_pin:
+                # 自动生成PIN
+                final_pin = self.generate_pin()
+            else:
+                # 不使用PIN
+                final_pin = None
             
             # 确定使用的域名
             used_domain = domain if domain else email.split('@')[1]
@@ -193,7 +202,7 @@ class AccountGenerator:
                 email=email,
                 password=password,
                 domain=used_domain,
-                pin=pin
+                pin=final_pin
             )
             
             self.logger.info(f"账号生成成功: {email}")
@@ -349,13 +358,14 @@ def get_account_generator() -> AccountGenerator:
 
 
 # 便捷函数
-def generate_cursor_account(domain: str = None, include_pin: bool = False) -> GeneratedAccount:
+def generate_cursor_account(domain: str = None, include_pin: bool = False, pin: str = None) -> GeneratedAccount:
     """生成Cursor账号"""
     generator = get_account_generator()
     return generator.generate_account(
         domain=domain,  # 使用传入的域名或默认域名
         username_prefix="cursor",
         include_pin=include_pin,
+        pin=pin,
         password_length=12
     )
 

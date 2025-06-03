@@ -6,10 +6,15 @@ from automation.base_automation import (
     RegistrationData, LoginData
 )
 from utils.account_generator import get_account_generator, GeneratedAccount
+from utils.logger import get_logger
 
 
 class CursorAutomation(BaseAutomation):
     """Cursor自动化类"""
+
+    def __init__(self, headless: bool = False, timeout: int = 30):
+        super().__init__(headless, timeout)
+        self.logger = get_logger()
     
     def get_service_name(self) -> str:
         return "Cursor"
@@ -23,46 +28,130 @@ class CursorAutomation(BaseAutomation):
     def get_homepage_url(self) -> str:
         return "https://www.cursor.com/"
 
-    def generate_account(self, domain: str = None, include_pin: bool = False) -> GeneratedAccount:
+    def input_fields_with_validation(self, fields_dict: dict) -> bool:
+        """改进的表单填充方法，参考用户提供的方法"""
+        import time
+        import random
+
+        # 存储已输入的值
+        input_values = {}
+
+        try:
+            for name, value in fields_dict.items():
+                print(f"🔤 正在输入 {name}: {value}")
+
+                # 获取当前输入框
+                field = self.page.ele(f'@name={name}')
+                if not field:
+                    print(f"❌ 找不到字段: {name}")
+                    return False
+
+                # 保存当前输入的值
+                input_values[name] = value
+
+                # 再次检查之前输入的内容是否还在
+                for prev_name, prev_value in input_values.items():
+                    if prev_name != name:
+                        prev_field = self.page.ele(f'@name={prev_name}')
+                        if prev_field:
+                            prev_current_value = prev_field.attr('value') or ''
+                            # 如果之前的值被清空，重新输入
+                            if not prev_current_value or prev_current_value != prev_value:
+                                print(f"⚠️ 检测到 {prev_name} 的值被清空，正在重新输入")
+                                prev_field.clear()
+                                prev_field.input(prev_value)
+                                time.sleep(random.uniform(0.5, 1))
+
+                # 输入当前字段的值
+                field.clear()
+                field.input(value)
+                time.sleep(random.uniform(1, 2))
+
+                # 验证输入是否成功
+                current_value = field.attr('value') or ''
+                if current_value == value:
+                    print(f"✅ 成功输入 {name}: {value}")
+                else:
+                    print(f"❌ 输入验证失败 {name}: 期望 '{value}', 实际 '{current_value}'")
+                    # 重试一次
+                    field.clear()
+                    field.input(value)
+                    time.sleep(1)
+                    current_value = field.attr('value') or ''
+                    if current_value != value:
+                        return False
+                    print(f"✅ 重试成功 {name}: {value}")
+
+            # 最终验证所有字段
+            print("🔍 最终验证所有字段...")
+            for name, expected_value in fields_dict.items():
+                field = self.page.ele(f'@name={name}')
+                if field:
+                    actual_value = field.attr('value') or ''
+                    if actual_value != expected_value:
+                        print(f"❌ 最终验证失败 {name}: 期望 '{expected_value}', 实际 '{actual_value}'")
+                        return False
+                    print(f"✅ 最终验证通过 {name}: {actual_value}")
+
+            return True
+
+        except Exception as e:
+            print(f"❌ 表单填充异常: {e}")
+            return False
+
+    def generate_account(self, domain: str = None, include_pin: bool = False, pin: str = None) -> GeneratedAccount:
         """生成Cursor账号信息"""
         generator = get_account_generator()
         return generator.generate_account(
             domain=domain,  # 使用传入的域名或默认域名
             username_prefix="cursor",
             include_pin=include_pin,
+            pin=pin,
             password_length=12
         )
 
-    def register_with_generated_account(self, domain: str = None, include_pin: bool = False) -> AutomationResult:
+    def register_with_generated_account(self, domain: str = None, include_pin: bool = False, pin: str = None,
+                                       chrome_path: str = None, headless: bool = None) -> AutomationResult:
         """使用生成的账号信息进行注册"""
         try:
             # 生成账号信息
-            generated_account = self.generate_account(domain=domain, include_pin=include_pin)
+            generated_account = self.generate_account(domain=domain, include_pin=include_pin, pin=pin)
+
+            # 生成随机姓名
+            import random
+            first_names = ["Alex", "Jordan", "Taylor", "Casey", "Morgan", "Riley", "Avery", "Quinn", "Blake", "Cameron"]
+            last_names = ["Smith", "Johnson", "Williams", "Brown", "Jones", "Garcia", "Miller", "Davis", "Rodriguez", "Martinez"]
+
+            first_name = random.choice(first_names)
+            last_name = random.choice(last_names)
 
             # 转换为注册数据
             reg_data = RegistrationData(
                 email=generated_account.email,
                 password=generated_account.password,
                 username=generated_account.username,
-                first_name="Cursor",
-                last_name="User"
+                first_name=first_name,
+                last_name=last_name
             )
 
             # 执行注册
-            result = self.register(reg_data)
+            result = self.register(reg_data, chrome_path=chrome_path, headless=headless)
 
-            # 如果注册成功或需要验证，添加生成的账号信息到结果
-            if result.status in [AutomationStatus.SUCCESS, AutomationStatus.EMAIL_VERIFICATION_REQUIRED]:
-                result.data.update({
-                    "generated_account": {
-                        "username": generated_account.username,
-                        "email": generated_account.email,
-                        "password": generated_account.password,
-                        "domain": generated_account.domain,
-                        "pin": generated_account.pin,
-                        "generated_at": generated_account.generated_at.isoformat()
-                    }
-                })
+            # 添加生成的账号信息到结果
+            if result.data is None:
+                result.data = {}
+            result.data.update({
+                "generated_account": {
+                    "username": generated_account.username,
+                    "email": generated_account.email,
+                    "password": generated_account.password,
+                    "domain": generated_account.domain,
+                    "pin": generated_account.pin,
+                    "first_name": first_name,
+                    "last_name": last_name,
+                    "generated_at": generated_account.generated_at.isoformat()
+                }
+            })
 
             return result
 
@@ -73,9 +162,9 @@ class CursorAutomation(BaseAutomation):
                 screenshot_path=self.take_screenshot("cursor_generated_register_failed")
             )
     
-    def register(self, data: RegistrationData) -> AutomationResult:
+    def register(self, data: RegistrationData, chrome_path: str = None, headless: bool = None) -> AutomationResult:
         """注册Cursor账号"""
-        if not self.init_browser():
+        if not self.init_browser(chrome_path=chrome_path, headless=headless):
             return AutomationResult(
                 status=AutomationStatus.FAILED,
                 message="浏览器初始化失败"
@@ -86,70 +175,27 @@ class CursorAutomation(BaseAutomation):
             self.page.get(self.get_registration_url())
             self.random_delay(2, 4)
             
-            # 等待页面加载
-            if not self.wait_for_element('input[type="email"]', timeout=10):
+            # 等待页面加载 - 检查First name字段
+            if not self.wait_for_element('input[name="first_name"]', timeout=10):
                 return AutomationResult(
                     status=AutomationStatus.FAILED,
                     message="注册页面加载失败",
                     screenshot_path=self.take_screenshot("cursor_register_page_load_failed")
                 )
             
-            # 输入邮箱
-            if not self.wait_and_input('input[type="email"]', data.email):
+            # 使用改进的表单填充方法
+            fields_dict = {
+                'first_name': data.first_name,
+                'last_name': data.last_name,
+                'email': data.email
+            }
+
+            if not self.input_fields_with_validation(fields_dict):
                 return AutomationResult(
                     status=AutomationStatus.FAILED,
-                    message="输入邮箱失败",
-                    screenshot_path=self.take_screenshot("cursor_register_email_failed")
+                    message="表单填充失败",
+                    screenshot_path=self.take_screenshot("cursor_register_form_failed")
                 )
-            
-            self.random_delay(1, 2)
-            
-            # 输入密码
-            password_selector = 'input[type="password"]'
-            if not self.wait_and_input(password_selector, data.password):
-                return AutomationResult(
-                    status=AutomationStatus.FAILED,
-                    message="输入密码失败",
-                    screenshot_path=self.take_screenshot("cursor_register_password_failed")
-                )
-            
-            self.random_delay(1, 2)
-            
-            # 如果有用户名字段，填写用户名
-            if data.username:
-                username_selectors = [
-                    'input[name="username"]',
-                    'input[placeholder*="username"]',
-                    'input[placeholder*="Username"]'
-                ]
-                for selector in username_selectors:
-                    if self.wait_for_element(selector, timeout=2):
-                        self.wait_and_input(selector, data.username)
-                        break
-            
-            # 如果有姓名字段，填写姓名
-            if data.first_name:
-                name_selectors = [
-                    'input[name="firstName"]',
-                    'input[name="first_name"]',
-                    'input[placeholder*="First"]',
-                    'input[placeholder*="Name"]'
-                ]
-                for selector in name_selectors:
-                    if self.wait_for_element(selector, timeout=2):
-                        self.wait_and_input(selector, data.first_name)
-                        break
-            
-            if data.last_name:
-                last_name_selectors = [
-                    'input[name="lastName"]',
-                    'input[name="last_name"]',
-                    'input[placeholder*="Last"]'
-                ]
-                for selector in last_name_selectors:
-                    if self.wait_for_element(selector, timeout=2):
-                        self.wait_and_input(selector, data.last_name)
-                        break
             
             # 处理服务条款复选框
             terms_selectors = [
@@ -170,21 +216,35 @@ class CursorAutomation(BaseAutomation):
             
             self.random_delay(1, 2)
             
-            # 点击注册按钮
+            # 点击Continue按钮（Cursor注册的提交按钮）
+            print(f"🔘 正在查找并点击Continue按钮...")
             register_selectors = [
+                'button[name="intent"][value="sign-up"]',  # Cursor特定的按钮
                 'button[type="submit"]',
+                'button:contains("Continue")',
                 'button:contains("Sign Up")',
                 'button:contains("Register")',
                 'button:contains("Create Account")',
                 'input[type="submit"]'
             ]
-            
+
             register_clicked = False
-            for selector in register_selectors:
-                if self.wait_for_element(selector, timeout=2):
-                    if self.wait_and_click(selector):
-                        register_clicked = True
-                        break
+            for i, selector in enumerate(register_selectors):
+                print(f"🔍 尝试选择器 {i+1}/{len(register_selectors)}: {selector}")
+                try:
+                    if self.wait_for_element(selector, timeout=3):
+                        print(f"✅ 找到按钮: {selector}")
+                        if self.wait_and_click(selector):
+                            print(f"✅ 成功点击Continue按钮")
+                            register_clicked = True
+                            break
+                        else:
+                            print(f"❌ 点击失败: {selector}")
+                    else:
+                        print(f"❌ 未找到: {selector}")
+                except Exception as e:
+                    print(f"❌ 选择器异常 {selector}: {e}")
+                    continue
             
             if not register_clicked:
                 return AutomationResult(
